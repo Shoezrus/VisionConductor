@@ -8,14 +8,22 @@
         body {
             margin: 0; /* Remove default margin */
             overflow: hidden; /* Prevent scrollbars from appearing */
-            background-color: transparent; /* Clear background */
+        }
+        #videoBackground {
+            position: fixed; /* Fixed positioning */
+            top: 0; /* Align to the top */
+            left: 0; /* Align to the left */
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            object-fit: cover; /* Cover the entire body */
+            z-index: -1; /* Behind other elements */
         }
         #quizContainer {
             position: relative; /* Position relative for stacking */
             width: 90%; /* Fill 90% of the width */
             text-align: center; /* Center text */
             color: white; /* Text color */
-            z-index: 1; /* Above the background */
+            z-index: 1; /* Above the video */
             display: flex; /* Use flexbox for centering */
             flex-direction: column; /* Stack items vertically */
             justify-content: flex-start; /* Align items at the top */
@@ -36,6 +44,11 @@
     </style>
 </head>
 <body>
+    <video id="videoBackground" autoplay loop muted>
+        <source src="bg-blue-subtle (1).mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
     <div id="quizContainer">
         <h1 id="question"></h1>
         <p id="answer"></p>
