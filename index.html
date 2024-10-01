@@ -6,13 +6,16 @@
     <title>Quiz</title>
     <style>
         body {
-            background-color: lightblue; /* Light blue background */
+            background-image: url('path/to/your/background.png'); /* Set background to PNG */
+            background-size: cover; /* Cover the entire body */
+            background-position: center; /* Center the background image */
             font-family: Arial, sans-serif; /* Font style */
             display: flex;
             justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
+            align-items: flex-start; /* Align items to the top */
             height: 100vh; /* Full viewport height */
             margin: 0; /* Remove default margin */
+            padding-top: 20px; /* Padding from the top */
         }
         #quizContainer {
             width: 80%; /* Fill 80% of the width */
@@ -20,12 +23,16 @@
         }
         h1 {
             font-size: 5vw; /* Font size adjusts to viewport width */
-            margin-bottom: 20px; /* Space between question and answer */
+            margin-bottom: 20px; /* Space below the question */
+            color: white; /* Change text color to white for contrast */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow for the question */
         }
         p {
             font-size: 8vw; /* Font size adjusts to viewport width */
             margin-top: 50px; /* Space above answer */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Slight shadow */
+            visibility: hidden; /* Start hidden until the answer is displayed */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Shadow for the answer */
+            color: white; /* Change text color to white for contrast */
         }
     </style>
 </head>
@@ -36,30 +43,46 @@
     </div>
 
     <script>
-        const data = [
-            { question: "What is your favorite color?", answer: "Red" },
-            { question: "What is the capital of France?", answer: "Paris" },
-            { question: "What is 2 + 2?", answer: "4" }
-            // Add more questions as needed
-        ];
+        // Function to fetch questions and answers from the Google Sheet
+        async function fetchQuestions() {
+            const response = await fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQqS9tLPvCuOxzzymVUPKn9DVr9k-lwS-Yhup8oerRVEA63cSpMBcBkmh1cXCYI-XBBtYSjgq0XE2gn/pub?gid=0&single=true&output=csv');
+            const data = await response.text();
+            const rows = data.split('\n').slice(1); // Skip the first row (title)
+            const questions = rows.map(row => {
+                const cols = row.split(',');
+                return {
+                    question: cols[0].trim(), // Get the question from column A
+                    answer: cols[1].trim()    // Get the answer from column B
+                };
+            }).filter(q => q.question); // Filter out any empty questions
+            return questions;
+        }
 
         let currentQuestion = 0;
+        let questions = [];
 
         function showQuestion() {
-            document.getElementById('question').innerText = data[currentQuestion].question;
+            document.getElementById('question').innerText = questions[currentQuestion].question;
             document.getElementById('answer').innerText = '';
-            
+
             setTimeout(() => {
-                document.getElementById('answer').innerText = data[currentQuestion].answer;
+                document.getElementById('answer').innerText = questions[currentQuestion].answer || ""; 
+                document.getElementById('answer').style.visibility = 'visible'; // Make answer visible
             }, 5000); // Show answer after 5 seconds
 
             setTimeout(() => {
-                currentQuestion = (currentQuestion + 1) % data.length; // Go to the next question
+                currentQuestion = (currentQuestion + 1) % questions.length; // Go to the next question
                 showQuestion(); // Show the next question
-            }, 10000); // Show each question and answer for 10 seconds
+            }, 10000); // Show each question for 10 seconds
         }
 
-        showQuestion(); // Start the quiz
+        // Start fetching questions and displaying them
+        fetchQuestions().then(fetchedQuestions => {
+            questions = fetchedQuestions;
+            showQuestion(); // Start the quiz
+        }).catch(err => {
+            console.error("Error fetching questions:", err);
+        });
     </script>
 </body>
 </html>
