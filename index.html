@@ -20,19 +20,23 @@
         }
         #quizContainer {
             position: relative; /* Position relative for stacking */
-            width: 80%; /* Fill 80% of the width */
+            width: 90%; /* Fill 90% of the width */
             text-align: center; /* Center text */
             color: white; /* Text color */
             z-index: 1; /* Above the video */
+            display: flex; /* Use flexbox for centering */
+            flex-direction: column; /* Stack items vertically */
+            justify-content: center; /* Center vertically */
+            height: 100vh; /* Full viewport height */
         }
         h1 {
-            font-size: 5vw; /* Font size adjusts to viewport width */
+            font-size: 8vw; /* Font size adjusts to viewport width */
             margin-bottom: 20px; /* Space below the question */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow for the question */
         }
         p {
-            font-size: 8vw; /* Font size adjusts to viewport width */
-            margin-top: 50px; /* Space above answer */
+            font-size: 10vw; /* Font size adjusts to viewport width */
+            margin-top: 20px; /* Space above answer */
             visibility: hidden; /* Start hidden until the answer is displayed */
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Shadow for the answer */
         }
