@@ -26,11 +26,12 @@
             z-index: 1; /* Above the video */
             display: flex; /* Use flexbox for centering */
             flex-direction: column; /* Stack items vertically */
-            justify-content: center; /* Center vertically */
+            justify-content: flex-start; /* Align items at the top */
             height: 100vh; /* Full viewport height */
+            padding-top: 50px; /* Space from top */
         }
         h1 {
-            font-size: 8vw; /* Font size adjusts to viewport width */
+            font-size: 6vw; /* Font size adjusts to viewport width, fills 80% */
             margin-bottom: 20px; /* Space below the question */
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow for the question */
         }
